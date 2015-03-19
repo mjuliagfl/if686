@@ -10,22 +10,8 @@ member a b |a == [] = False
 
 digits :: String -> String
 digits x |x == [] =x
-	     |otherwise = number (head x) ++ digits (tail x)
-
-
-number :: Char -> [Char]
-number x 
- |x == '0' = ['0']
- |x == '1' = ['1']
- |x == '2' = ['2']
- |x == '3' = ['3']
- |x == '4' = ['4']
- |x == '5' = ['5']
- |x == '6' = ['6']
- |x == '7' = ['7']
- |x == '8' = ['8']
- |x == '9' = ['9']
- |otherwise = []
+		 |(head x >= '0' && head x <= '9') = [head x] ++ digits (tail x)
+	     |otherwise = digits (tail x)
 
  
 sumpairs :: [Int] -> [Int] -> [Int]
@@ -34,3 +20,21 @@ sumpairs a b |a ==[] && b ==[] =[]
 			 |b ==[] = a
 			 |otherwise = [(head a + head b)] ++ sumpairs (tail a) (tail b)
  
+ -- quicksort
+quick :: [Int] -> [Int]
+quick x
+ |x == [] = []
+ |otherwise = (quick (less (head x) (tail x)) ) ++ (head x : quick (greater (head x) (tail x)))
+
+
+less :: Int -> [Int] -> [Int]
+less n l
+ |l == [] =[]
+ |head l < n = [head l] ++ less n (tail l)
+ |otherwise  = less n (tail l)
+
+greater :: Int -> [Int] -> [Int]
+greater n l
+ |l == [] =[]
+ |head l >= n = [head l] ++ greater n (tail l)
+ |otherwise = greater n (tail l)
