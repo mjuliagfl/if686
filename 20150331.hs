@@ -128,3 +128,22 @@ median (f:s) i j filterN len
 filtroMediana :: [[Int]] -> Int -> [[Int]]
 filtroMediana [] _ = []
 filtroMediana (f:s) filterN = median (f:s) 0 0 (filterN) (length (f:s))
+
+-------------------------------
+--ATIVIDADES DA AULA
+-- Questão 1
+afd :: String -> [Int] -> [(Int, Int, String)] -> Int -> [Int] -> Bool
+afd [] _ _ _ _ = False
+afd c s t ini fin = fst (percorre c s t ini fin) && member fin (snd(percorre c s t ini fin))
+
+transit :: String -> Int -> [(Int, Int, String)] -> [Int]
+transit ch s l = [b | (a, b, c) <- l, (ch == c && s == a) ]
+
+percorre :: String -> [Int] -> [(Int, Int, String)] -> Int -> [Int] -> (Bool, Int)
+percorre c s t ini fin
+ |c == [] = (True, ini)
+ |transit [(head c)] ini t == [] = (False, ini)
+ |otherwise = percorre (tail c) s t ( (transit [(head c)] ini t) !! 0) fin 
+
+member :: [Int] -> Int -> Bool
+member x n = ([ l | l <- x, l == n]) /= []
