@@ -68,4 +68,34 @@ comparaConjuntos a b
  |intersec (finalList a) (finalList b) == finalList b = "A contem B"
  |otherwise = "A interseciona B"
 
+-- CODIGOS DA AULA
+--TAKE
+tk :: [t] -> Int -> [t]
+tk [] n = []
+tk l n
+ |n <= 0 = []
+ |otherwise = [head l] ++ tk (tail l) (n-1)
+ 
+--DROP
+dr :: [t] -> Int -> [t]
+dr [] n = []
+dr l n
+ |n > 0 = dr (tail l) (n-1)
+ |otherwise = l
 
+
+--ORDENAÇÃO
+--mergesort generico
+mergeSort :: Ord t => [t] -> [t]
+mergeSort x
+ |x == [] = []
+ |tail x == [] = [head x]
+ |otherwise = merge (mergeSort (fst (splitAt (div (length x) 2) x)))  (mergeSort (snd (splitAt (div (length x) 2) x)))
+
+merge :: Ord t => [t] -> [t] -> [t]
+merge a b
+ |a == [] && b==[] =[]
+ |a ==[] = b
+ |b == [] = a
+ |head a <= head b = head a:merge (tail a) b
+ |otherwise = head b:merge a (tail b)
