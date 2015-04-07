@@ -147,3 +147,86 @@ percorre c s t ini fin
 
 member :: [Int] -> Int -> Bool
 member x n = ([ l | l <- x, l == n]) /= []
+
+
+-- Questão 2
+convert :: Char -> Int
+convert x
+ |x == '0' = 0
+ |x == '1' = 1
+ |x == '2' = 2
+ |x == '3' = 3
+ |x == '4' = 4
+ |x == '5' = 5
+ |x == '6' = 6
+ |x == '7' = 7
+ |x == '8' = 8
+ |x == '9' = 9
+ |x == 'A' = 10
+ |x == 'B' = 11
+ |x == 'C' = 12
+ |x == 'D' = 13
+ |x == 'E' = 14
+ |x == 'F' = 15
+
+intChar :: Int -> Char
+intChar x
+ |x == 0 = '0'
+ |x == 1 = '1'
+ |x == 2 = '2'
+ |x == 3 = '3'
+ |x == 4 = '4'
+ |x == 5 = '5'
+ |x == 6 = '6'
+ |x == 7 = '7'
+ |x == 8 = '8'
+ |x == 9 = '9'
+ |x == 10 = 'A'
+ |x == 11 = 'B'
+ |x == 12 = 'C'
+ |x == 13 = 'D'
+ |x == 14 = 'E'
+ |x == 15 = 'F'
+
+
+somatorioHexadecimal :: [String] -> String
+somatorioHexadecimal x = toHex (somatorioDecimal x)
+
+
+somatorioDecimal :: [String] -> Int
+somatorioDecimal s
+ |length s == 0 = 0
+ |length s == 1 = toDec (reverse (head s))
+ |otherwise = toDec(reverse (head s)) + somatorioDecimal (tail s)
+
+
+toDec :: String -> Int --  recebe string reversed
+toDec s 
+ |length s == 0 = 0
+ |length s == 1 = convert (head s)
+ |otherwise = convert (head s) + (16 *(toDec (tail s)))
+
+toHex :: Int -> String
+toHex x
+ |x < 16 = [intChar x]
+ |otherwise = toHex (div x 16) ++ [intChar (mod x 16)] 
+
+
+--Questão 3
+palindromoDecimal :: String -> String
+palindromoDecimal x
+ |pali (show (toDec (reverse x))) == True = show (toDec(reverse x)) ++ " - PALINDROMO" --uso reverse aqui so porque minha funcao
+--de converter pra decimal recebe a string revertida
+ |otherwise = show (toDec(reverse x)) ++ " - NAO-PALINDROMO"
+
+
+pali :: String -> Bool --metodo que verifica se e palindromo 
+pali x 
+ |x == revNum x = True
+ |otherwise = False
+
+revNum :: String -> String --reverte o numero
+revNum x
+ |length x == 0 = ""
+ |length x == 1 = [head x]
+ |otherwise = revNum (tail x) ++ [head x]
