@@ -73,4 +73,9 @@ member n l = foldr2 (||) False (map (== n) l)
 --union x l = x ++ foldr2 (me 
 
 
+--6)
+somaC :: String -> Int
+somaC s = foldr2 (+) 0 (posicaoAlfabeto s)
 
+somaCaracteres :: [String] -> [Int]
+somaCaracteres l = [somaC x | x <- l] 
