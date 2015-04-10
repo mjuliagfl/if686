@@ -70,18 +70,34 @@ comparaConjuntos a b
 
 -- CODIGOS DA AULA
 --TAKE
-tk :: [t] -> Int -> [t]
+tk :: Ord t => [t] -> Int -> [t]
 tk [] n = []
 tk l n
  |n <= 0 = []
  |otherwise = [head l] ++ tk (tail l) (n-1)
  
 --DROP
-dr :: [t] -> Int -> [t]
+dr :: Ord t => [t] -> Int -> [t]
 dr [] n = []
 dr l n
  |n > 0 = dr (tail l) (n-1)
  |otherwise = l
+
+--TAKE WHILE
+tkWhile :: Ord t => (t -> Bool)-> [t] -> [t]
+tkWhile f [] = []
+tkWhile f l 
+ |(f (head l)) = [head l] ++ tkWhile f (tail l) 
+ |otherwise = []
+
+
+--DROP WHILE
+
+drWhile :: Ord t => (t -> Bool)-> [t] -> [t]
+drWhile f [] = []
+drWhile f l 
+ |(f (head l)) =  drWhile f (tail l)
+ |otherwise = l 
 
 
 --ORDENAÇÃO
@@ -99,3 +115,37 @@ merge a b
  |b == [] = a
  |head a <= head b = head a:merge (tail a) b
  |otherwise = head b:merge a (tail b)
+
+--AGRUPAR
+
+agrupar :: Ord t => [[t]] -> [(t, Int)]
+agrupar t = reverse (group (reverse (pairs (join t))))
+
+group ::  Ord t =>  [(t, Int)] ->  [(t, Int)]
+group [] = []
+group (a:as)
+ |as == [] = [a]
+ |member as (fst a) = group as
+ |otherwise = [a] ++ group as
+
+
+member :: Ord t =>  [(t, Int)] -> t ->  Bool
+member [] _ = False
+member ((m, i):as) n
+ |m == n = True
+ |otherwise = member as n
+
+join :: Ord t => [[t]] -> [t]
+join [] = []
+join s = head s ++ join (tail s)
+
+quant :: Ord t => t -> [t] -> Int
+quant t [] = 0
+quant t s
+ |head s == t = 1 + quant t (tail s)
+ |otherwise = quant t (tail s)
+
+pairs :: Ord t => [t] -> [(t, Int)]
+pairs [] = []
+pairs l = [(head l, (quant (head l) l))] ++ pairs (tail l)
+
