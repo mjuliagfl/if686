@@ -79,3 +79,42 @@ somaC s = foldr2 (+) 0 (posicaoAlfabeto s)
 
 somaCaracteres :: [String] -> [Int]
 somaCaracteres l = [somaC x | x <- l] 
+
+
+--7)
+data Tree t = NilT | NodeT t (Tree t) (Tree t) deriving(Eq, Show, Ord)
+
+insert :: Ord t => t -> Tree t -> Tree t
+insert n NilT = NodeT n (NilT) (NilT)
+insert n (NodeT x (left) (right))
+ |n == x = (NodeT x (left) (right))
+ |(n > x) = NodeT x (left) (insert n right)
+ |otherwise = NodeT x (insert n left) (right)
+--NodeT n (NodeT n (NilT)(NilT)) (NodeT n (NilT)(NilT))
+
+
+--8)
+criarArvore :: Ord t => [t] -> (t -> Tree t -> Tree t) -> Tree t
+criarArvore l f = foldr2 f NilT (reverse l) 
+
+criarArvoreInt :: [Int] -> Tree Int
+criarArvoreInt l = criarArvore l insert
+
+
+----------------
+--filter
+filter2 :: (t -> Bool) -> [t] -> [t]
+filter2 f l = [x | x <- l, f x]
+--9)
+positives l = filter2 positive l
+ where positive n = (n >= 0)
+
+--10) (3)
+inter :: Eq t => [t] -> [t] -> [t]
+inter l1 l2 = filter2 both l1
+ where both n = (member n l1) && (member n l2)
+--11) (4)
+
+diff :: Eq t => [t] -> [t] -> [t]
+diff l1 l2 = (filter2 diffe l1 ) ++ (filter2 diffe l2 )
+ where diffe n =  not ((member n l1) && (member n l2))
