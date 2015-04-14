@@ -30,7 +30,8 @@ temPlc s
  |otherwise = temPlc (tail s)
 
 
-data Tree t = NilT | Node t (Tree t) (Tree t) deriving(Eq, Show)
+data Tree t = NilT | NodeT t (Tree t) (Tree t) deriving(Eq, Show)
+
 
 data Expr = Lit Int |
  Add Expr Expr |
@@ -42,6 +43,16 @@ showExpr (Lit n) = show n
 showExpr (Add e1 e2) = showExpr e1 ++ " + " ++ showExpr e2
 showExpr (Sub e1 e2) = showExpr e1 ++ " - " ++ showExpr e2
 
-data List t = Nil | Cons t (List t)
+data List1 t = NilList | Cons t (List1 t) deriving (Show)
 
---toList :: List t -> [t]
+toList :: List1 t -> [t]
+toList NilList = []
+toList (Cons a (as) ) = [a] ++ toList as 
+
+fromList :: [t] -> List1 t 
+fromList [] = NilList
+fromList l = Cons (head l) (fromList (tail l))
+
+collapse :: Tree t -> [t]
+collapse NilT = []
+collapse (NodeT x (left)(right)) = ([x] ++ collapse left) ++ collapse right
