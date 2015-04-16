@@ -53,6 +53,11 @@ fromList :: [t] -> List1 t
 fromList [] = NilList
 fromList l = Cons (head l) (fromList (tail l))
 
+depth:: Tree t -> Int
+depth NilT = 0
+depth (NodeT x NilT NilT) = 0
+depth (NodeT x (left)(right)) = 1 + max (depth left) (depth right)
+
 collapse :: Tree t -> [t]
 collapse NilT = []
 collapse (NodeT x (left)(right)) = ([x] ++ collapse left) ++ collapse right
