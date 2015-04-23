@@ -1,0 +1,134 @@
+
+Aula 1 - Introdução
+
+1) 
+Implemente uma função que, dado um número inteiro
+
+N, retorne uma lista de inteiros com os N primeiros 
+
+números pares da sequência de Fibonacci.
+
+2)
+Crie um função que recebe uma lista de inteiros e 
+
+retorna a lista ordenada em função da soma de seus 
+
+digitos(crescente):
+
+Prelude> ordenar [5,12,70,8,25,3,150]
+
+[12,3,5,150,70,25,8]
+
+----------------------------------------------
+
+Aula 2 - Tuplas e casamento de padrões
+
+
+3)
+
+3.1) getWord :: String -> String
+
+3.2) dropWord :: String -> String
+
+3.3) dropSpace :: String -> String
+
+type Word = String
+
+3.4) splitWords :: String -> [Word]
+
+type Line = [Word]
+
+3.5) getLine :: Int -> [Word] -> Line
+
+3.6) dropLine :: Int -> [Word] -> [Word]
+
+3.7) splitLines :: [Word] -> [Line]
+
+3.8) fill :: String -> [Line]
+     fill st = splitLines (splitWords st)
+
+3.9)joinLines :: [Line] -> String
+
+------------------------------------------------
+Aula 3 - polimorfismo
+
+Tudo ok
+-----------------------------------------------
+Aula de exercicios
+
+4)
+ Definidos os tipos Vector e Matrix como segue, crie a função multiplicaMatrizes que executa apenas a multiplicação entre duas matrizes (Matrix) quadradas. O retorno da função deve ser uma Matrix que contem o resultado da multiplicação entre os parâmetros. Eficiência não é uma preocupação para resolver essa questão.
+
+type Vector = [Double]
+type Matrix = [Vector]
+
+Prelude> multiplicaMatrizes [[1, 2], [3, 4]] [[4, 3], [2, 1]]
+[[8.0,5.0],[20.0,13.0]]
+
+
+------------------------------------------------
+
+Aula 4 - Tipos algebricos
+
+5)
+bfs :: Tree t -> t -> Bool 
+6)
+mapTree :: (t -> u) -> Tree t -> Tree u
+
+
+-------------------------------------------------
+Aula 5 - Funcoes alta ordem
+
+7)
+union, que recebe duas listas e retorna uma lista
+
+representando a união das duas recebidas
+
+8)
+Implemente uma função mapfilter que, sem usar
+
+map nem filter, comporte-se como a função
+
+map.filter
+
+9)
+
+9.1) Implemente uma função mapfold que, sem usar map
+
+nem foldr, comporte-se como a função
+
+map.foldr
+
+9.2) Em seguida, implemente uma função que pega a lista l
+
+produzida como resultado de uma aplicação de 
+
+mapfold e, dada uma lista m de elementos de um tipo 
+
+tão genérico quando possível, aplica os elementos de l a 
+
+m.
+
+
+
+-------------------------------------------------
+Aula 6 - Aplicacao parcial
+
+Defina, usando aplicação parcial de funções, 
+
+funções para:
+
+
+10) Dada uma lista de números, obter o maior da lista
+
+11) Dada uma árvore binária, devolver uma função 
+
+que, dada uma árvore binária, verifica se as duas 
+
+árvores são isomórficas
+
+12) Dada uma lista, devolve uma função que, dada uma 
+
+lista, devolve uma lista de pares onde cada par 
+
+contém um elemento de cada lista
