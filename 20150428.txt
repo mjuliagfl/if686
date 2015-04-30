@@ -1,0 +1,177 @@
+--Trabalho 10
+--Questão 1
+foldr (+).(.).map
+
+--primeiramente, fazendo:
+(.).map
+-- definindo cada uma:
+(.) : (b -> c) -> (a -> b) -> (a -> c)
+entradacomp: (b -> c)
+saidacomp: (a -> b) -> (a-> c)
+
+
+map : (d -> e) -> [d] -> [e]
+entradamap: (d -> e)
+saidamap: [d] -> [e]
+
+--Como aplicarei composição  a map e (.) ,temos, de acordo com a descrição de (.), que:
+
+saidamap = entradacomp
+([e] -> [f])  =  (b -> c)
+
+b = [d]
+c = [e]
+
+construindo a saida de ((.).map):
+
+(entradamap -> saidacomp)
+(d -> e) -> (a -> [d]) -> (a ->  [e])
+
+
+agora tem que fazer (foldr (+))
+
+foldr :: (c -> b -> b) -> b -> [c] -> b
+
+(+):: Num t => t -> t -> t
+
+foldr (+) :: Num t => t -> [t] -> t
+
+c = t
+b = t
+ambos da classe Num
+
+depois compor (foldr (+)) e ((.).map)
+
+foldr (+) :: Num t => t -> [t] -> t
+
+(.).map :: (d -> e) -> (a -> [d]) -> (a ->  [e])
+
+(.) : (r -> s) -> (q -> r) -> (q -> s)
+
+q = (d -> e)
+r =  (a -> [d]) -> (a ->  [e])
+r =  t (Num)
+
+então r = t = (a -> [d]) -> (a ->  [e]) (num)
+
+
+
+s = ([t] -> t)
+
+resultado da composição: (d -> e) -> ([t] -> t)
+ 
+Num (a -> [d]) -> (a ->  [e]) => (d -> e) -> ([(a -> [d]) -> (a ->  [e])] -> (a -> [d]) -> (a ->  [e]))
+
+--Questão 2
+(\x y z -> foldr z x y).map
+
+map :: (a -> b) -> [a] -> [b]
+Input1 = (a -> b)
+Output1 = [a] -> [b]
+
+(\x y z -> foldr z x y)
+foldr :: (u -> t -> t) -> t -> [u] -> t
+(\x y z) :: t -> [u] -> (u -> t -> t) -> t
+Input2 = t
+Output2 = [u] -> (u -> t -> t) -> t
+
+Output1 = Input2
+t = [a] -> [b]
+
+Input1 -> Output2
+(a -> b) -> [u] -> (u -> ([a] -> [b]) -> [a] -> [b]) -> [a] -> [b]
+
+
+(\x y z -> foldr z x y).map :: (a -> b) -> [u] -> (u -> ([a] -> [b]) -> [a] -> [b]) -> [a] -> [b]
+
+
+--Questão 3
+
+map.((.) (foldr (++) (foldr (++) [] [[1],[2]])))
+
+(foldr (++) [] [[1],[2]]) :: Num a => [a]
+
+(foldr (++) (foldr (++) [] [[1],[2]])) :: Num t => [[t]] -> [t]
+
+(.) :: (v -> u) -> (k -> v) -> (k -> u)
+
+((.) (foldr (++) (foldr (++) [] [[1],[2]])))
+Input1 = (v -> u)
+Output1 = (k -> v) -> k -> u
+
+(v -> u) = [[t]] -> [t]
+v = [[t]]
+u = [t]
+
+Output1 = (k -> [[t]]) -> (k -> [t])
+((.) (foldr (++) (foldr (++) [] [[1],[2]]))) :: Num t => (k -> [[t]]) -> k -> [t]
+Input1 = (k -> [[t]])
+Output1 = k -> [t]
+
+map :: (p -> l) -> [p] -> [l]
+Input2 = (p -> l)
+Output2 = [p] -> [l]
+
+Output1 = Input2
+(k -> [t]) = p -> l
+k = p
+[t] = l
+
+Input1 -> Output2
+(k -> [[t]]) -> [p] -> [l]
+(k -> [[t]]) -> [k] -> [[t]]
+
+map.((.) (foldr (++) (foldr (++) [] [[1],[2]]))) :: Num t => (k -> [[t]]) -> [k] -> [[t]]
+
+
+--Questão 4
+
+(foldr).(.)$(!!)
+--SÓ LEMBRANDO QUE DEVIDO AO $, O QUE ESTAMOS FAZENDO É APLICANDO (!!) Á FUNÇÃO
+-- (foldr).(.)
+--NÃO SE ENGANAR COM (.)$(!!) APLICADO A (FOLDR).
+
+--PRIMEIRO PASSO (foldr).(.)
+
+(foldr).(.)
+
+(.) :: (u -> v) -> (t -> u) -> (t -> v)
+Input1 = (u -> v)
+Output1 = (t -> u) -> (t -> v)
+
+(foldr) :: (a -> b -> b) -> b -> [a] -> b
+Input2 = (a -> b -> b)
+Output2 = b -> [a] -> b
+
+Output1 = Input2
+(t -> u) -> (t -> v) = a -> (b -> b)
+(t -> u) = a
+(t -> v) =  (b -> b)
+	b = t / v = b
+
+Input1 -> Output2
+(u -> v) -> b -> [a] -> b
+(u -> t) -> t -> [(t -> u)] -> t
+
+(foldr).(.) :: (u -> t) -> t -> [(t -> u)] -> t
+
+--SEGUNDO PASSO (foldr).(.)$(!!)
+
+(!!) :: [a] -> Int -> a
+
+(foldr).(.) :: (u -> t) -> t -> [(t -> u)] -> t
+
+[a] -> Int -> a
+==
+[a] -> (Int -> a)
+
+
+(u -> t) = [a] -> (Int -> a)
+u = [a]
+t = (Int -> a)
+
+
+(foldr).(.)$(!!) :: t -> [(t -> u)] -> t
+==
+
+(foldr).(.)$(!!) :: (Int -> a) -> [(Int -> a) -> [a]] -> Int -> a
